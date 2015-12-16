@@ -30,7 +30,7 @@ Ainv = sparse(Ainv);  % save it as a sparse matrix
 
 AinvSqrt = chol(Ainv);
 
-R = chol(AinvSqrt);
+R = (AinvSqrt);
 I2 = speye(size(AinvSqrt));
 ASqrt  =R\(R'\I2);
 
