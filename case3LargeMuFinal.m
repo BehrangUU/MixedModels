@@ -7,8 +7,8 @@
 clear all
 %load('Ainv.mat'); % Load the data Ainv
 
-%Or creat some positive definie symmetic covariance matrix
-q = 1000;
+%Or creat some positive definie symmetic precision matrix A
+q = 500;
 A = sprandsym(q,0.01);
 A = A'+A + q*eye(q);
 
@@ -22,10 +22,11 @@ k = 70;
 N = 10; % number of iterations
 
 %--- simulate y
-R = chol(Ainv);
-I2 = speye(size(Ainv));
-A = R\(R'\I2); % inverse of A
-     
+% R = chol(Ainv);
+% I2 = speye(size(Ainv));
+% A = R\(R'\I2); % inverse of A
+A = inv(Ainv);
+
 Ainv = sparse(Ainv);  % save it as a sparse matrix
 
 AinvSqrt = chol(Ainv);
@@ -169,10 +170,11 @@ for i = 1:N
     u_y = P2*(Q1t-A1'*Cinv*(A1*Q1t+A2*Q2t)); %L3
     TraceZu_y =  sparsetrace(Z,u_y);
     
-    beta_y = Cinv*(A1*Q1t + A2*Q2t - (A1*inv(R))*u_y);
-    TraceBeta_y = sparsetrace(X,beta_y);
+  %  beta_y = Cinv*(A1*Q1t + A2*Q2t - (A1*inv(R))*u_y);
+  %  TraceBeta_y = sparsetrace(X,beta_y);
     
-    T_Hbeta = TraceZu_y + TraceBeta_y;    
+    %T_Hbeta = TraceZu_y + TraceBeta_y;    
+    T_Hbeta = TraceZu_y + p;    
     T_Hu = q - TraceZu_y; % 
     
     e = y - X*beta-Z* u_lanc(:,i); 

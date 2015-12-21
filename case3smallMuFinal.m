@@ -7,8 +7,8 @@
 clear all
 %load('Ainv.mat'); % Load the data Ainv
 
-%Or creat some positive definie symmetic covariance matrix
-q = 1000;
+%Or creat some positive definie symmetic precision matrix
+q = 500;
 A = sprandsym(q,0.01);
 A = A'+A + q*eye(q);
 
@@ -160,10 +160,10 @@ for i = 1:N
 
     TraceZu_y =  sparsetrace(Z,u_y);
     
-    beta_y = Cinv*(A1*Q1t + A2*Q2t - (A1*inv(R))*u_y);
-    TraceBeta_y = sparsetrace(X,beta_y);
+   % beta_y = Cinv*(A1*Q1t + A2*Q2t - (A1*inv(R))*u_y);
+    %TraceBeta_y = sparsetrace(X,beta_y);
     
-    T_Hbeta = TraceZu_y + TraceBeta_y;    
+    T_Hbeta = TraceZu_y + p;%TraceBeta_y;    
     T_Hu = q - TraceZu_y; % 
     
     e = y - X*beta-Z* u_lanc(:,i); 
@@ -176,4 +176,4 @@ for i = 1:N
  end
 t2 = toc;
 
-disp([t2])
+disp([t,t2])
